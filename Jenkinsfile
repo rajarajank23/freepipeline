@@ -29,7 +29,7 @@ pipeline {
 
                     // Copy your code to the EC2 instance using SSH
 
-                    sh "rsync -avzr --update -e "ssh -v -o StrictHostKeyChecking=no" $WORKSPACE/freepipeline/ ubuntu@54.169.238.200:/home/ubuntu/html
+                    sh "rsync -avzr --update -e "ssh -v -o StrictHostKeyChecking=no" $WORKSPACE/pipeline/ ubuntu@54.169.238.200:/home/ubuntu/html
 "
 
                 }
