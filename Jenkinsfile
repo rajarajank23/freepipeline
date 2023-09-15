@@ -25,7 +25,7 @@ pipeline {
      }
 
       // Get the EC2 instance ID
-      def ec2InstanceID = sh(returnStdout: true, script: 'aws ec2 describe-instances | grep "InstanceId" | awk \'{print $3}\'')
+      def ec2InstanceID = sh(returnStdout: true, script: 'aws ec2 describe-instances | grep "i-05ef54f4d06b7573d" | awk \'{print $3}\'')
 
       // Create a SSH connection to the EC2 instance
       withCredentials([sshCredentials(credentialsId: 'ubuntu')]) {
