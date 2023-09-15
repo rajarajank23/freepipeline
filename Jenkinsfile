@@ -2,22 +2,45 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout code') {
-      git 'git clone https://github.com/rajarajank23/freepipeline.git'
+    stage('clone repo and clean it') {
+         steps (
+              sh "rm -rf freepipe"
+              sh "git clone https://github.com/rajarajank23/freepipeline.git"
+              sh "mvn clean -f freepipe"
+         }
+
     }
 
-    stage('Build code') {
-      sh 'mvn clean install'
+
+        
+
+        stage('Deploy to EC2') {
+
+            steps {
+
+                script {
+
+                    // Define your EC2 instance SSH connection details
+
+                    def remoteUser = 'ubuntu'
+
+                    def remoteHost = '54.169.238.200'
+
+                    def remoteDir = '/home/ubuntu/myprod'
+
+                    
+
+                    // Copy your code to the EC2 instance using SSH
+
+                    sh "rsync -avzr --update -e "ssh -v -o StrictHostKeyChecking=no" $WORKSPACE/freepipeline/ ubuntu@54.169.238.200:/home/ubuntu/html
+"
+
+                }
+
+            }
+
+        }
+
     }
 
-    stage('Deploy code') {
-      // Get the EC2 instance ID
-      def ec2InstanceID = sh(returnStdout: true, script: 'aws ec2 describe-instances | grep "i-05ef54f4d06b7573d" | awk \'{print $3}\'')
-
-      // Create a SSH connection to the EC2 instance
-      withCredentials([sshCredentials(credentialsId: 'ubuntu')]) {
-        sh 'ssh -i ~/.ssh/id_rsa ubuntu@${i-05ef54f4d06b7573d} "cd /home/ubuntu/html && mvn clean install"'
-      }
-    }
-  }
 }
