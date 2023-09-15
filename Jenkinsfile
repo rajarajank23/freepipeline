@@ -4,9 +4,9 @@ pipeline {
   stages {
     stage('clone repo and clean it') {
          steps (
-              sh "rm -rf freepipe"
-              sh "git clone https://github.com/rajarajank23/freepipeline.git"
-              sh "mvn clean -f freepipe"
+              sh 'rm -rf freepipe'
+              sh 'git clone https://github.com/rajarajank23/freepipeline.git'
+              sh 'mvn clean -f freepipe'
          }
 
     }
