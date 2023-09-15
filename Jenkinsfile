@@ -2,28 +2,15 @@ pipeline {
   agent any
 
   stages {
-    stage('clone repo and clean it') {
-         steps (
-              sh "rm -rf freepipe"
-              sh "git clone https://github.com/rajarajank23/freepipeline.git"
-              sh "mvn clean -f freepipe"
-         }
-
+    stage('Checkout code') {
+      git 'git clone https://github.com/rajarajank23/freepipeline.git'
     }
 
-    stage('Test') {
-         steps {
-              sh "mvn test -f freepipe"
-         }
+    stage('Build code') {
+      sh 'mvn clean install'
     }
 
     stage('Deploy code') {
-         steps {
-              sh "mvn package -f freepipe"
-          }
- 
-     }
-
       // Get the EC2 instance ID
       def ec2InstanceID = sh(returnStdout: true, script: 'aws ec2 describe-instances | grep "i-05ef54f4d06b7573d" | awk \'{print $3}\'')
 
