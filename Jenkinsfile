@@ -10,24 +10,23 @@ pipeline {
             }
         }
         
-        stages {
         stage('Deploy to EC2') {
             steps {
                 script {
                     // Define your EC2 instance's SSH credentials
                     def remoteUser = 'ubuntu'
                     def remoteHost = '54.169.238.200'
-                    def sshKey = credentials('ubuntu') // Replace with your SSH credentials ID in Jenkins
-                    
-                    // SSH into the EC2 instance and execute the script
-                    sshScript(
-                        remoteUser: ubuntu,
-                        remoteHost: 54.169.238.200,
-                        keyFile: sshKey,
-                        script: 'bash /home/ubuntu/myprod'
-                    )
+                    def remoteKey = credentials('ubuntu') // Add your SSH credentials in Jenkins
+                
+                    // SSH into the EC2 instance and copy the code
+                    sh """\
+                       sshagent(credentials: ['ubuntu']) {
+                       sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.169.238.200 "bash /home/ubuntu/html"'
+                    """
                 }
             }
         }
     }
+}
+
 }
