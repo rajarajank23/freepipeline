@@ -4,9 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Check out your source code repository here
-                // For example, if you're using Git:
-                git branch: 'pipe', credentialsId: 'mygithub', url: 'https://github.com/rajarajank23/freepipeline.git'
+                git branch: 'pipe', credentialsId: 'mygithub' url: 'https://github.com/rajarajank23/freepipeline.git'
             }
         }
         
@@ -20,7 +18,7 @@ pipeline {
                 
                     // SSH into the EC2 instance and copy the code
                     sh """\
-                       sshagent(credentials: ['ubuntu']) {
+                       sshagent(credentials: ['encyclopedia-dev']) {
                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.169.238.200 "bash /home/ubuntu/myprod"'
                     """
                 }
@@ -28,4 +26,3 @@ pipeline {
         }
     }
 }
-
