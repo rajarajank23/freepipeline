@@ -21,7 +21,7 @@ pipeline {
                     // SSH into the EC2 instance and copy the code
                     sh """\
                         
-                        scp -i ${remoteKey} -r * ${ubuntu}@${54.169.238.200}:/home/ubuntu/html
+                       sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.169.238.200 "bash /home/ubuntu/html"'
                     """
                 }
             }
