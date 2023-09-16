@@ -1,45 +1,30 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('clone repo and clean it') {
-         steps (
-              sh 'rm -rf freepipe'
-              sh 'git clone https://github.com/rajarajank23/freepipeline.git'
-              sh 'mvn clean -f freepipe'
-         }
-
-    }
-
-        
-
-        stage('Deploy to EC2') {
-
+    stages {
+        stage('Checkout') {
             steps {
-
-                script {
-
-                    // Define your EC2 instance SSH connection details
-
-                    def remoteUser = 'ubuntu'
-
-                    def remoteHost = '54.169.238.200'
-
-                    def remoteDir = '/home/ubuntu/myprod'
-
-                    
-
-                    // Copy your code to the EC2 instance using SSH
-
-                    sh "rsync -avzr --update -e "ssh -v -o StrictHostKeyChecking=no" $WORKSPACE/freepipeline/ ubuntu@54.169.238.200:/home/ubuntu/html
-"
-
-                }
-
+                // Check out your source code repository here
+                // For example, if you're using Git:
+                git branch: 'pipe', url: 'https://github.com/rajarajank23/freepipeline.git'
             }
-
         }
-
+        
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    // Define your EC2 instance's SSH credentials
+                    def remoteUser = 'ubuntu'
+                    def remoteHost = '54.169.238.200'
+                    def remoteKey = credentials('ubuntu') // Add your SSH credentials in Jenkins
+                
+                    // SSH into the EC2 instance and copy the code
+                    sh """\
+                        ssh -i ${remoteKey} ${ubuntu}@${54.169.238.200} 'mkdir -p /home/ubuntu/html'
+                        scp -i ${remoteKey} -r * ${ubuntu}@${54.169.238.200}:/home/ubuntu/html
+                    """
+                }
+            }
+        }
     }
-
 }
