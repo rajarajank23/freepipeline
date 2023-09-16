@@ -6,7 +6,7 @@ pipeline {
             steps {
                 // Check out your source code repository here
                 // For example, if you're using Git:
-                git branch: 'pipe', url: 'https://github.com/rajarajank23/freepipeline.git'
+                git branch: 'pipe', credentialsId: 'mygithub' url: 'https://github.com/rajarajank23/freepipeline.git'
             }
         }
         
