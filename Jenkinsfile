@@ -20,7 +20,7 @@ stage('Deploy') {
             steps {
                 
                        sshagent(credentials: ['ubuntu']) {
-                       sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.169.238.200 "/home/ubuntu/myprod"'
+                       sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.169.238.200:/home/ubuntu/myprod'
                     
                 }
             }
