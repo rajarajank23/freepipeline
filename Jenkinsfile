@@ -20,7 +20,7 @@ pipeline {
                 
                     // SSH into the EC2 instance and copy the code
                     sh """\
-                        ssh -i ${remoteKey} ${ubuntu}@${54.169.238.200} 'mkdir -p /home/ubuntu/html'
+                        
                         scp -i ${remoteKey} -r * ${ubuntu}@${54.169.238.200}:/home/ubuntu/html
                     """
                 }
